@@ -1,12 +1,15 @@
 package com.example.serverapplication;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -24,9 +27,17 @@ public class GameLoopActivity extends AppCompatActivity {
     private TextView newNumber;
     private TextView numberList;
 
+    private Fragment_Player1 fragment1;
+    private Fragment_Player2 fragment2;
+    private Fragment_Player3 fragment3;
+    private Fragment_Player4 fragment4;
+    private FragmentManager fragmentManager;
+
+    /*
     private RecyclerView recyclerView_playerFields;
     private RecyclerView.LayoutManager layoutManager_playerFields;
     private PlayersFieldAdapter playersFieldAdapter;
+    */
 
     public static String WINNER;
     public static String winnermsg;
@@ -52,12 +63,22 @@ public class GameLoopActivity extends AppCompatActivity {
         newNumber = findViewById(R.id.newNumber);
         numberList = findViewById(R.id.numberList);
 
-        //recycler
+        //fragments
+        fragmentManager = getSupportFragmentManager();
+        fragment1 = Fragment_Player1.newInstance(players.get(0).getMatrixArray());
+        fragment2 = Fragment_Player2.newInstance();
+        fragment3 = Fragment_Player3.newInstance();
+        fragment4 = Fragment_Player4.newInstance();
+
+        players.get(0).setPlayerFragment(fragment1);
+
+        /*//recycler
         recyclerView_playerFields = findViewById(R.id.recycler_playersFields);
         layoutManager_playerFields = new GridLayoutManager(this, 2);
         recyclerView_playerFields.setLayoutManager(layoutManager_playerFields);
         playersFieldAdapter = new PlayersFieldAdapter(players);
         recyclerView_playerFields.setAdapter(playersFieldAdapter);
+        */
 
         //invio segnale startloop
         sendstart.start();
@@ -119,9 +140,11 @@ public class GameLoopActivity extends AppCompatActivity {
                         }
                     }
 
+                    /*
                     runOnUiThread(()->{
                         playersFieldAdapter.notifyDataSetChanged();
                     });
+                    */
                     index++;
                 }
             }
@@ -216,5 +239,11 @@ public class GameLoopActivity extends AppCompatActivity {
 
     public static void setProceed(){
         proceed = true;
+    }
+
+    public void btn_click_player1(View view){
+        FragmentTransaction ft = fragmentManager.beginTransaction();
+        ft.replace(R.id.fragmentCont, fragment1);
+        ft.commit();
     }
 }

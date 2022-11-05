@@ -58,6 +58,7 @@ public class checkWinThread extends Thread{
                             }
                             listToCheck.set(j,tmpArr);
                             setList(listToCheck);
+                            thisPlayer.getPlayerFragment().
                         }
 
                         break;

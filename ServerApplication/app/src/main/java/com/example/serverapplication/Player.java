@@ -1,5 +1,7 @@
 package com.example.serverapplication;
 
+import androidx.fragment.app.Fragment;
+
 import java.io.BufferedReader;
 import java.io.PrintWriter;
 import java.net.Socket;
@@ -14,20 +16,9 @@ public class Player {
     private String name;
     private int matrixNumber;
     private ArrayList<int[]> matrixArray;
+    private Fragment playerFragment;
 
-    // CONSTRUCTOR
-    /*
-    private Player(PrintWriter sender, BufferedReader receiver, String address, Receiver threadReceiver, Socket socket, String name){
-        this.sender = sender;
-        this.receiver = receiver;
-        this.address = address;
-        this.threadReceiver = threadReceiver;
-        this.clientSocket = socket;
-        this.name = name;
-    }
-    */
     public Player(){ }
-
 
     // GETTER
     public PrintWriter getSender() {
@@ -52,7 +43,11 @@ public class Player {
 
     public int getMatrixNumber() { return matrixNumber; }
 
-    public ArrayList<int[]> getMatrixArray() {return matrixArray; }
+    public ArrayList<int[]> getMatrixArray() { return matrixArray; }
+
+    public Fragment getPlayerFragment() {
+        return playerFragment;
+    }
 
     // SETTER
     public void setSender(PrintWriter sender) {
@@ -80,5 +75,9 @@ public class Player {
     public void setMatrixNumber(int number) {this.matrixNumber = number; }
 
     public void setMatrixArray(ArrayList<int[]> list) {this.matrixArray = list; }
+
+    public void setPlayerFragment(Fragment frg) {
+        this.playerFragment = frg;
+    }
 
 }

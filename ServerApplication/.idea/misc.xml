@@ -8,13 +8,20 @@
         <entry key="..\:/Users/utente/Desktop/UNI/LAM/ANDROID/projects/myTests/ServerApplication/app/src/main/res/drawable/fullgrey.xml" value="0.177" />
         <entry key="..\:/Users/utente/Desktop/UNI/LAM/ANDROID/projects/myTests/ServerApplication/app/src/main/res/drawable/fullwhite.xml" value="0.177" />
         <entry key="..\:/Users/utente/Desktop/UNI/LAM/ANDROID/projects/myTests/ServerApplication/app/src/main/res/drawable/fullyellow.xml" value="0.177" />
+        <entry key="..\:/Users/utente/Desktop/UNI/LAM/ANDROID/projects/myTests/ServerApplication/app/src/main/res/drawable/to_select_ball.xml" value="0.177" />
         <entry key="..\:/Users/utente/Desktop/UNI/LAM/ANDROID/projects/myTests/ServerApplication/app/src/main/res/layout/activity_game.xml" value="0.264" />
         <entry key="..\:/Users/utente/Desktop/UNI/LAM/ANDROID/projects/myTests/ServerApplication/app/src/main/res/layout/activity_game_loop.xml" value="0.264" />
         <entry key="..\:/Users/utente/Desktop/UNI/LAM/ANDROID/projects/myTests/ServerApplication/app/src/main/res/layout/activity_lobby.xml" value="0.264" />
         <entry key="..\:/Users/utente/Desktop/UNI/LAM/ANDROID/projects/myTests/ServerApplication/app/src/main/res/layout/activity_main.xml" value="0.264" />
         <entry key="..\:/Users/utente/Desktop/UNI/LAM/ANDROID/projects/myTests/ServerApplication/app/src/main/res/layout/activity_pregame.xml" value="0.264" />
         <entry key="..\:/Users/utente/Desktop/UNI/LAM/ANDROID/projects/myTests/ServerApplication/app/src/main/res/layout/activity_winner.xml" value="0.264" />
+        <entry key="..\:/Users/utente/Desktop/UNI/LAM/ANDROID/projects/myTests/ServerApplication/app/src/main/res/layout/fragment__player1.xml" value="0.25" />
+        <entry key="..\:/Users/utente/Desktop/UNI/LAM/ANDROID/projects/myTests/ServerApplication/app/src/main/res/layout/fragment__player2.xml" value="0.25" />
+        <entry key="..\:/Users/utente/Desktop/UNI/LAM/ANDROID/projects/myTests/ServerApplication/app/src/main/res/layout/fragment__player3.xml" value="0.25" />
+        <entry key="..\:/Users/utente/Desktop/UNI/LAM/ANDROID/projects/myTests/ServerApplication/app/src/main/res/layout/fragment__player4.xml" value="0.25" />
+        <entry key="..\:/Users/utente/Desktop/UNI/LAM/ANDROID/projects/myTests/ServerApplication/app/src/main/res/layout/fragment__s_t_d.xml" value="0.25" />
         <entry key="..\:/Users/utente/Desktop/UNI/LAM/ANDROID/projects/myTests/ServerApplication/app/src/main/res/layout/recycler_exitednumbers.xml" value="0.264" />
+        <entry key="..\:/Users/utente/Desktop/UNI/LAM/ANDROID/projects/myTests/ServerApplication/app/src/main/res/layout/recycler_fields.xml" value="0.4" />
         <entry key="..\:/Users/utente/Desktop/UNI/LAM/ANDROID/projects/myTests/ServerApplication/app/src/main/res/layout/recycler_player.xml" value="0.176" />
         <entry key="..\:/Users/utente/Desktop/UNI/LAM/ANDROID/projects/myTests/ServerApplication/app/src/main/res/layout/recycler_playerfields.xml" value="0.264" />
       </map>

@@ -3,7 +3,7 @@ package com.example.myapplication;
 public class Matrix {
 
     public static class MatrixNumbers{
-        private boolean flag;       //true -> uscito, false -> non uscito
+        private boolean flag;       //true -> exited, false -> not exited
         private int numero;
         private String numToString;
 
@@ -41,9 +41,8 @@ public class Matrix {
     }
 
 
-    private MatrixNumbers[] myMatrix;
+    private final MatrixNumbers[] myMatrix;
 
-    //Costruttore
     public Matrix(MatrixNumbers[] myMatrix) {
         this.myMatrix = myMatrix;
     }

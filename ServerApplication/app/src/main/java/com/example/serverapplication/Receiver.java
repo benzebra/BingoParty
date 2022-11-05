@@ -32,7 +32,6 @@ public class Receiver extends Thread{
                         setPlayerName(message);
                         firstInput = false;
                     }else if(message.equals("cardsnumber")){
-                        //System.out.println("DEBUG Receiver:35, message: " + message);
                         setPlayerMatrix(Integer.parseInt(fromClient.readLine()));
                     }else{
                         notifyGameLoop();

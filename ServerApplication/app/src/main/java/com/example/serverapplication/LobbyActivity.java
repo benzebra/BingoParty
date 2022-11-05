@@ -126,7 +126,7 @@ public class LobbyActivity extends AppCompatActivity {
         public void run() {
             try {
                 mySocket = new ServerSocket(PORT);
-                mySocket.setSoTimeout(9000);
+                mySocket.setSoTimeout(10000);
 
                 playersNumber = 0;
 

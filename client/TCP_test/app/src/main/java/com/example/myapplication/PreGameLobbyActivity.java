@@ -54,14 +54,14 @@ public class PreGameLobbyActivity extends AppCompatActivity {
     }
 
     public void startSignalGameLoop(){
-        Intent CardSelectionIntent = new Intent(this, GameLoopActivity.class);
+        Intent GameLoopIntent = new Intent(this, GameLoopActivity.class);
 
         new Thread(new Runnable() {
             @Override
             public void run() {
                 while(true){
                     if(startLoop){
-                        startActivity(CardSelectionIntent);
+                        startActivity(GameLoopIntent);
                         break;
                     }
                 }
