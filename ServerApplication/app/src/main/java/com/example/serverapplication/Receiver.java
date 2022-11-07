@@ -1,8 +1,6 @@
 package com.example.serverapplication;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.IOException;
 
 public class Receiver extends Thread{
     private BufferedReader fromClient;
@@ -25,7 +23,7 @@ public class Receiver extends Thread{
         while(!Thread.interrupted()){
             try{
                 message = fromClient.readLine();
-                System.out.println("DEBUG Receiver:28, message: " + message);
+                System.out.println("DEBUG Receiver, message: " + message);
 
                 if(message != null){
                     if(firstInput){
@@ -33,8 +31,11 @@ public class Receiver extends Thread{
                         firstInput = false;
                     }else if(message.equals("cardsnumber")){
                         setPlayerMatrix(Integer.parseInt(fromClient.readLine()));
+                    }else if(message.equalsIgnoreCase("bingo")){
+                        System.out.println("bingo message received");
+                        notifyGameLoopBingo(getPlayerNAME());
                     }else{
-                        notifyGameLoop();
+                        notifyGameLoopProceed();
                     }
                 }
             } catch (Exception e) {
@@ -43,7 +44,11 @@ public class Receiver extends Thread{
         }
     }
 
-    public static void notifyGameLoop(){
+    public static void notifyGameLoopBingo(String name){
+        GameLoopActivity.setBingo(name);
+    }
+
+    public static void notifyGameLoopProceed(){
         GameLoopActivity.setProceed();
     }
 

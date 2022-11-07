@@ -76,6 +76,10 @@ public class Receiver extends Thread{
                         //LobbyActivity.flag = true;
                         sendStartSignalLoop();
                         //setExitedNumber(Integer.parseInt(fromServer.readLine()));
+                    }else if(msg.equals("completed")){
+                        sendBingoSignal();
+                    }else if(msg.equals("winnerIs")){
+                        startWinnerAct(fromServer.readLine());
                     }
                 }
             }catch(Exception e){
@@ -86,6 +90,14 @@ public class Receiver extends Thread{
 
     public void sendStartSignalCards(){ LobbyActivity.setStartCards(); }
     public void sendStartSignalLoop(){ PreGameLobbyActivity.setStartLoop(); }
+
+    public static void sendBingoSignal(){
+        GameLoopActivity.notifyBingoButton();
+    }
+
+    public static void startWinnerAct(String name){
+        GameLoopActivity.winerAct(name);
+    }
 
     public void setExitedNumber(int num){
         exitedNumber = num;

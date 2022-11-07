@@ -36,6 +36,7 @@ public class checkWinThread extends Thread{
                     int newArrayDim;
                     //se trovo il numero...
                     if( numToCheck == arrayToCheck[n] ){
+                        System.out.println("CW: number founded");
                         tmplen = arrayToCheck.length;
                         //System.out.println("winthread:38 - " + currentThread().getName() + " " + tmplen);
                         newArrayDim = tmplen-1;
@@ -44,7 +45,7 @@ public class checkWinThread extends Thread{
 
                         //se la dimensione del nuovo array è 0 ho fatto bingo
                         if(newArrayDim == 0){
-                            setWin(thisPlayer.getName());
+                            setWin(thisPlayer);
                             //winnerIs(players[i].getName());
                         }else{
                             //altrimenti creo il nuovo array e lo sostituisco a quello di prima
@@ -58,7 +59,6 @@ public class checkWinThread extends Thread{
                             }
                             listToCheck.set(j,tmpArr);
                             setList(listToCheck);
-                            thisPlayer.getPlayerFragment().
                         }
 
                         break;
@@ -76,8 +76,8 @@ public class checkWinThread extends Thread{
         GameLoopActivity.incrementNumberOfCheckedClient();
     }
 
-    public void setWin(String winner){
-        System.out.println("winthread:71");
+    public void setWin(Player winner){
+        //System.out.println("winthread:71");
         this.win = true;
         //call a metodo in gameloop per dire che questo player ha vinto (input -> nome player)
         GameLoopActivity.setWin(winner);

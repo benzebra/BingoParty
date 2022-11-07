@@ -62,7 +62,6 @@ public class MatrixAdapter extends RecyclerView.Adapter<MatrixAdapter.MatrixView
         //System.out.println("DEBUG ADAPTER:65, matrix: " + dataset.get(position));
 
         for(int i=0; i<myMatrix.length; i++){
-            System.out.println("adapter: " + myMatrix[i]);
             toModify = holder.TVList[i];
             toPut = Integer.toString(myMatrix[i]);
             toModify.setText(toPut);

@@ -89,17 +89,16 @@
         app:layout_constraintTop_toBottomOf="@+id/textView4">
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/player1_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="15sp"
             android:layout_weight="1"
-            android:onClick="btn_click_player1"
             android:text="1"
             android:textSize="40sp" />
 
         <Button
-            android:id="@+id/button2"
+            android:id="@+id/player2_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="15sp"
@@ -108,7 +107,7 @@
             android:textSize="40sp" />
 
         <Button
-            android:id="@+id/button3"
+            android:id="@+id/player3_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="15sp"
@@ -117,7 +116,7 @@
             android:textSize="40sp" />
 
         <Button
-            android:id="@+id/button4"
+            android:id="@+id/player4_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="15sp"

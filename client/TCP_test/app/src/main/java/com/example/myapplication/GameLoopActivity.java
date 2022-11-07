@@ -4,7 +4,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -20,6 +24,11 @@ public class GameLoopActivity extends AppCompatActivity {
      */
     private ArrayList<Matrix> matrixArrayList;
     private TextView extract;
+
+    private static Context myContext;
+
+    private Button bingo_btn;
+    private static boolean win = false;
 
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
@@ -80,6 +89,8 @@ public class GameLoopActivity extends AppCompatActivity {
 
         extract = findViewById(R.id.estrazione);
 
+        myContext = this;
+
         recyclerView = findViewById(R.id.recycler);
         layoutManager = new GridLayoutManager(this,2);
         recyclerView.setLayoutManager(layoutManager);
@@ -91,6 +102,24 @@ public class GameLoopActivity extends AppCompatActivity {
 
         mySender = new Sender(LobbyActivity.getServer().getToServer());
         myReceiver = LobbyActivity.getReceiver();
+
+        bingo_btn = findViewById(R.id.BingoButton);
+        bingo_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(win){
+                    Thread bingoMessage = new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            mySender.sendMessage("BINGO", "BINGO");
+                        }
+                    });
+                    bingoMessage.start();
+
+
+                }
+            }
+        });
 
         //INVIO NUMERO DI CARTELLE AL SERVER
         /*
@@ -256,9 +285,6 @@ public class GameLoopActivity extends AppCompatActivity {
             tmpMatrix = matrixArrayList.get(i).getMyMatrix();
             for(int j=0; j<tmpMatrix.length; j++){
                 if(tmpMatrix[j].getNumero() == num){
-                    //?????????????????????????????????????????
-                    //toast??????????????????'
-
                     Matrix.MatrixNumbers[] finalTmpMatrix = tmpMatrix;
                     int finalJ = j;
                     runOnUiThread(()->{
@@ -266,7 +292,6 @@ public class GameLoopActivity extends AppCompatActivity {
 
                         matrixAdapter.notifyDataSetChanged();
                     });
-
                 }
             }
         }
@@ -285,10 +310,20 @@ public class GameLoopActivity extends AppCompatActivity {
 
             //attendo 2 secondi prima del prossimo numero
             try {
-                Thread.sleep(2500);
+                Thread.sleep(1000);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
     });
+
+    public static void notifyBingoButton(){
+        win = true;
+    }
+
+    public static void winerAct(String name){
+        Intent winnerIntent = new Intent(myContext, WinnerActivity.class);
+        winnerIntent.putExtra("winner", name);
+        myContext.startActivity(winnerIntent);
+    }
 }

@@ -1,20 +1,19 @@
 package com.example.serverapplication;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+import androidx.lifecycle.Lifecycle;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Random;
 
 public class GameLoopActivity extends AppCompatActivity {
 
@@ -27,20 +26,14 @@ public class GameLoopActivity extends AppCompatActivity {
     private TextView newNumber;
     private TextView numberList;
 
-    private Fragment_Player1 fragment1;
-    private Fragment_Player2 fragment2;
-    private Fragment_Player3 fragment3;
-    private Fragment_Player4 fragment4;
+    private Fragment_Player fragment_player;
     private FragmentManager fragmentManager;
-
-    /*
-    private RecyclerView recyclerView_playerFields;
-    private RecyclerView.LayoutManager layoutManager_playerFields;
-    private PlayersFieldAdapter playersFieldAdapter;
-    */
+    private int switchNumber = 4;
 
     public static String WINNER;
     public static String winnermsg;
+
+    private Button[] btn;
 
     public static String stream;
 
@@ -63,29 +56,41 @@ public class GameLoopActivity extends AppCompatActivity {
         newNumber = findViewById(R.id.newNumber);
         numberList = findViewById(R.id.numberList);
 
-        //fragments
+        btn = new Button[4];
+        btn[0] = findViewById(R.id.player1_btn);
+        btn[1] = findViewById(R.id.player2_btn);
+        btn[2] = findViewById(R.id.player3_btn);
+        btn[3] = findViewById(R.id.player4_btn);
+
+        for(int i=0; i<players.size(); i++){
+            int finalI = i;
+            btn[i].setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    switchNumber = finalI;
+                }
+            });
+        }
+
+        for(int i=players.size(); i<4; i++){
+            btn[i].setEnabled(false);
+        }
+
+        //fragment
         fragmentManager = getSupportFragmentManager();
-        fragment1 = Fragment_Player1.newInstance(players.get(0).getMatrixArray());
-        fragment2 = Fragment_Player2.newInstance();
-        fragment3 = Fragment_Player3.newInstance();
-        fragment4 = Fragment_Player4.newInstance();
 
-        players.get(0).setPlayerFragment(fragment1);
-
-        /*//recycler
-        recyclerView_playerFields = findViewById(R.id.recycler_playersFields);
-        layoutManager_playerFields = new GridLayoutManager(this, 2);
-        recyclerView_playerFields.setLayoutManager(layoutManager_playerFields);
-        playersFieldAdapter = new PlayersFieldAdapter(players);
-        recyclerView_playerFields.setAdapter(playersFieldAdapter);
-        */
-
-        //invio segnale startloop
-        sendstart.start();
+        //standard fragment
+        Fragment_STD fragment_std = Fragment_STD.newInstance();
+        FragmentTransaction ft = fragmentManager.beginTransaction();
+        ft.replace(R.id.fragmentCont, fragment_std);
+        ft.commit();
 
         //array numeri usciti
         numbers = new boolean[90];
         Arrays.fill(numbers, false);
+
+        //invio segnale startloop
+        sendstart.start();
 
         //gameLoop(parseStream(getStream()));
         gameLoop.start();
@@ -133,18 +138,21 @@ public class GameLoopActivity extends AppCompatActivity {
                     boolean signal = false;
                     while(!signal){
                         if(numberOfCheckedClient == players.size()){
-                            for(Thread t : checkWinThreadArray){
-                                t.interrupt();
+                            for(int i=0; i<checkWinThreadArray.length; i++){
+                                checkWinThreadArray[i].interrupt();
                             }
                             signal = true;
+
+                            runOnUiThread(() -> {
+                                if(switchNumber != 4){
+                                    fragment_player = new Fragment_Player(players.get(switchNumber).getMatrixArray(), players.get(switchNumber).getName());
+                                    FragmentTransaction ft = fragmentManager.beginTransaction();
+                                    ft.replace(R.id.fragmentCont, fragment_player);
+                                    ft.commit();
+                                }
+                            });
                         }
                     }
-
-                    /*
-                    runOnUiThread(()->{
-                        playersFieldAdapter.notifyDataSetChanged();
-                    });
-                    */
                     index++;
                 }
             }
@@ -153,54 +161,16 @@ public class GameLoopActivity extends AppCompatActivity {
         }
     });
 
-    /*
-    public void gameLoop(int[] streamInt){
-        int index = 0;
+    public void winnerIs(){
+        System.out.println("winneris method");
 
-        while(!win){
-            //mettere un if(booleano) [settato in true quando il receiver riceve un numero che indica l'indice]
-            if(proceed) {
-                proceed = false;
-                //while(!win && index<streamInt.length){
-                setNumberOfCheckedClient();
-                int number = streamInt[index];
-                System.out.println("Gameloop:73 - " + number);
-
-                newNumber.setText(Integer.toString(number));
-
-                //avvio tutti i thread che controllano (uno per giocatore)
-                //prova a farlo con threadpool
-                Thread[] checkWinThreads = new checkWinThread[players.size()];
-                for (int i = 0; i < players.size(); i++) {
-                    checkWinThreads[i] = new checkWinThread(number, players.get(i));
-                    checkWinThreads[i].start();
-                }
-
-                //una volta avviati i thread aspetto il risultato
-                //entro in un loop infinito in cui controllo che il numero di utenti controllati sia uguale a il totale
-                boolean signal = false;
-                while (!signal) {
-                    //posso utilizzar eun metodo mentre questo sta ciclendo all'infinito (due utilizzi nello stesso thread)
-                    if (numberOfCheckedClient == players.size()) {
-                        for (int i = 0; i < players.size(); i++) {
-                            checkWinThreads[i].interrupt();
-                        }
-                        signal = true;
-                    } else {
-                        //wait
-                    }
-                }
-                index++;
-            }
+        gameLoop.interrupt();
+        for(Player user : players){
+            user.getThreadReceiver().interrupt();
         }
 
-        winnerIs();
-    }
-
-     */
-
-    public void winnerIs(){
         Intent winnerIntent = new Intent(this, WinnerActivity.class);
+        System.out.println("DEBUG 173 WINNERINTENT");
         winnerIntent.putExtra(WINNER, winnermsg);
         startActivity(winnerIntent);
     }
@@ -212,9 +182,11 @@ public class GameLoopActivity extends AppCompatActivity {
         numberOfCheckedClient = 0;
     }
 
-    public static void setWin(String winnerThread){
-        win = true;
-        winnermsg = winnerThread;
+    public static void setWin(Player winner){
+        //win = true;
+        winnermsg = winner.getName();
+        winner.getSender().println("completed");
+        winner.getSender().flush();
     }
 
     public int[] parseStream(String mystream){
@@ -234,6 +206,7 @@ public class GameLoopActivity extends AppCompatActivity {
                 value.getSender().println("startloop");
                 value.getSender().flush();
             }
+            Thread.currentThread().interrupt();
         }
     });
 
@@ -241,9 +214,8 @@ public class GameLoopActivity extends AppCompatActivity {
         proceed = true;
     }
 
-    public void btn_click_player1(View view){
-        FragmentTransaction ft = fragmentManager.beginTransaction();
-        ft.replace(R.id.fragmentCont, fragment1);
-        ft.commit();
+    public static void setBingo(String name){
+        System.out.println("setted bingo");
+        win = true;
     }
 }

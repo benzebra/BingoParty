@@ -16,7 +16,6 @@ public class Player {
     private String name;
     private int matrixNumber;
     private ArrayList<int[]> matrixArray;
-    private Fragment playerFragment;
 
     public Player(){ }
 
@@ -45,9 +44,6 @@ public class Player {
 
     public ArrayList<int[]> getMatrixArray() { return matrixArray; }
 
-    public Fragment getPlayerFragment() {
-        return playerFragment;
-    }
 
     // SETTER
     public void setSender(PrintWriter sender) {
@@ -75,9 +71,5 @@ public class Player {
     public void setMatrixNumber(int number) {this.matrixNumber = number; }
 
     public void setMatrixArray(ArrayList<int[]> list) {this.matrixArray = list; }
-
-    public void setPlayerFragment(Fragment frg) {
-        this.playerFragment = frg;
-    }
 
 }

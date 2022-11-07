@@ -26,6 +26,9 @@ public class Sender {
         }
 
          */
+        if(content.equalsIgnoreCase("BINGO")){
+            System.out.println("bingo message sended");
+        }
         //System.out.println("DEBUG Sender:29, message: " + content);
         toServer.println(content);
         //System.out.println("DEBUG Sender:31, message sent, now it's time to flush");
