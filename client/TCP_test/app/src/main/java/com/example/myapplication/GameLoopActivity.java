@@ -25,6 +25,8 @@ public class GameLoopActivity extends AppCompatActivity {
     private ArrayList<Matrix> matrixArrayList;
     private TextView extract;
 
+    private static boolean proceed = false;
+
     private static Context myContext;
 
     private Button bingo_btn;
@@ -42,8 +44,8 @@ public class GameLoopActivity extends AppCompatActivity {
 
     private int[] streamInt;
 
-    public static Object objMatrix = new Object();
-    public static Object objStream = new Object();
+    public static final Object objMatrix = new Object();
+    public static final Object objStream = new Object();
     public static Object objStreamInt = new Object();
     public static boolean flagMatrix = false;
     public static boolean flagStream = false;
@@ -59,31 +61,21 @@ public class GameLoopActivity extends AppCompatActivity {
 
     public static void setStream(String[] arr){
         stream = arr;
-        /*
-        System.out.println("DEBUG Loop:51, stream: ");
-        for(int i=0; i<stream.length; i++){
-            System.out.print(stream[i] + " ");
-        }
-
-         */
     }
     public String[] getStream(){
         return stream;
     }
 
-    /*public void setStreamInt(int[] stream){
-        streamInt = stream;
-    }*/
     public int[] getStreamInt(){
         return streamInt;
     }
+
+    public static String WINNER;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_loop);
-
-        //System.out.println("DEBUG GameLoop");
 
         getSupportActionBar().hide();
 
@@ -115,19 +107,9 @@ public class GameLoopActivity extends AppCompatActivity {
                         }
                     });
                     bingoMessage.start();
-
-
                 }
             }
         });
-
-        //INVIO NUMERO DI CARTELLE AL SERVER
-        /*
-        Thread sendToServer = new Thread(() -> {
-            mySender.sendMessage("cardsNumber", Integer.toString(CardSelectionActivity.getCardsNumber()));
-        });
-        sendToServer.start();
-         */
 
         //RICEVO LE CARTELLE DAL SERVER
         Thread receiverCom = new Thread(() -> {
@@ -155,92 +137,12 @@ public class GameLoopActivity extends AppCompatActivity {
                 Thread.currentThread().interrupt();
             }
 
-            /*
-            synchronized (objStreamInt){
-                while(!flagStreamInt){
-                    renderNumber.start();
-                    Thread.currentThread().interrupt();
-                }
-            }
-
-             */
 
         });
         receiverCom.start();
 
-        /*
-        //RICEVO LA STREAM DI NUMERI CHE ESCONO DAL SERVER
-        Thread receiverStream = new Thread(() -> {
-            synchronized (objStream){
-                while(!flagStream){
-                    try{
-                        objStream.wait();
-                    }catch (Exception e){
-                        e.printStackTrace();
-                    }
-                }
-                setStreamInt();
-                renderNumber.start();
-                Thread.currentThread().interrupt();
-            }
-        });
-        receiverStream.start();
-
-         */
-
-
-        //matrixArrayList = myReceiver.getMatrix();
-
-        //System.out.println("debug loop:64, listsize: " + matrixArrayList.size());
-
-        /*
-        matrixArrayList = myReceiver.getMatrix();
-        System.out.println(matrixArrayList.size());
-        matrixAdapter.notifyDataSetChanged();
-
-         */
     }
 
-    /*
-    public void setMatrixArrayList() throws InterruptedException {
-        matrixArrayList = myReceiver.getMatrix();
-
-        matrixAdapter.notifyDataSetChanged();
-
-        //----------DEBUG--------------//
-        System.out.println("DEBUG GameLoop:56");
-        for(int i=0; i<matrixArrayList.size(); i++){
-            for(int j=0; j<matrixArrayList.get(i).getMyMatrix().length; j++){
-                System.out.print(matrixArrayList.get(i).getMyMatrix()[j].getNumero() + " ");
-            }
-        }
-        System.out.println(" ");
-        System.out.println("DEBUG GameLoop:63");
-        //-----------------------------//
-    }
-
-
-     */
-    /*
-    public static void setMatrixList(String fromServer){
-        int[] tmpArray = parseString(fromServer);
-
-        matrixArrayList.add(new Matrix(tmpArray));
-
-        matrixAdapter.notifyDataSetChanged();
-    }
-
-
-    public static int[] parseString(String array) {
-        String[] newArr = array.split(" ");
-        int[] tmp = new int[newArr.length];
-        for(int i=0; i<newArr.length; i++){
-            tmp[i] = Integer.parseInt(newArr[i]);
-        }
-
-        return tmp;
-    }
-     */
 
     public void parseToList(){
         String[] array = getParsedArray();
@@ -255,7 +157,6 @@ public class GameLoopActivity extends AppCompatActivity {
             Matrix tmp = new Matrix(numbersArray);
 
             matrixArrayList.add(tmp);
-            //System.out.println("DEBUG 155 " + tmp);
             matrixAdapter.notifyDataSetChanged();
         }
 
@@ -299,6 +200,18 @@ public class GameLoopActivity extends AppCompatActivity {
 
     Thread renderNumber = new Thread(() -> {
         int[] numbersStream = getStreamInt();
+        int index = 0;
+
+        while(!win){
+            if(proceed){
+                proceed = false;
+
+                setMainNumber(numbersStream[index]);
+                index++;
+            }
+        }
+        /*
+        int[] numbersStream = getStreamInt();
 
         for(int i=0; i<numbersStream.length; i++){
 
@@ -315,6 +228,7 @@ public class GameLoopActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
+         */
     });
 
     public static void notifyBingoButton(){
@@ -323,7 +237,11 @@ public class GameLoopActivity extends AppCompatActivity {
 
     public static void winerAct(String name){
         Intent winnerIntent = new Intent(myContext, WinnerActivity.class);
-        winnerIntent.putExtra("winner", name);
+        winnerIntent.putExtra(WINNER, name);
         myContext.startActivity(winnerIntent);
+    }
+
+    public static void setProceed(){
+        proceed = true;
     }
 }

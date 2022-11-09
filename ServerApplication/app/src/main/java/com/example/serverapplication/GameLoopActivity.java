@@ -20,7 +20,7 @@ public class GameLoopActivity extends AppCompatActivity {
     private ArrayList<Player> players;
     private boolean[] numbers;
     private static boolean win = false;
-    private static boolean proceed = false;
+    //private static boolean proceed = false;
     private static int numberOfCheckedClient;
 
     private TextView newNumber;
@@ -36,6 +36,8 @@ public class GameLoopActivity extends AppCompatActivity {
     private Button[] btn;
 
     public static String stream;
+
+    private boolean finished = false;
 
     public static void setStream(String streamGen){
         stream = streamGen;
@@ -99,78 +101,85 @@ public class GameLoopActivity extends AppCompatActivity {
     Thread gameLoop = new Thread(new Runnable() {
         @Override
         public void run() {
-            int index = 0;
             int[] streamInt = parseStream(getStream());
 
             while(!win){
-                if(proceed){
-                    proceed = false;
-
-                    setNumberOfCheckedClient();
-                    int number = streamInt[index];
-
-                    int finalIndex = index;
-
-                    runOnUiThread(() -> {
-
-                        int startingIndex;
-                        String toDisp = "";
-
-                        if((finalIndex-5) > 0){
-                            startingIndex = finalIndex-5;
-                        }else {
-                            startingIndex = 0;
+                if(!finished){
+                    for(int i=0; i<streamInt.length; i++){
+                        if(win){
+                            break;
                         }
 
-                        for(int i = startingIndex; i<finalIndex; i++){
-                            toDisp = toDisp + streamInt[i] + " ";
+                        //notify user
+                        for(Player user : players){
+                            user.getSender().println("num");
+                            user.getSender().flush();
                         }
-                        numberList.setText(toDisp);
-                        newNumber.setText(Integer.toString(number));
-                    });
 
-                    Thread[] checkWinThreadArray = new checkWinThread[players.size()];
-                    for(int i=0; i<players.size(); i++){
-                        checkWinThreadArray[i] = new checkWinThread(number, players.get(i));
-                        checkWinThreadArray[i].start();
-                    }
+                        setNumberOfCheckedClient();
+                        int number = streamInt[i];
 
-                    boolean signal = false;
-                    while(!signal){
-                        if(numberOfCheckedClient == players.size()){
-                            for(int i=0; i<checkWinThreadArray.length; i++){
-                                checkWinThreadArray[i].interrupt();
+                        //DISPLAY THE NUMBER
+                        int finalIndex = i;
+                        runOnUiThread(() -> {
+                            int startingIndex;
+                            String toDisp = "";
+
+                            if((finalIndex-5) > 0){
+                                startingIndex = finalIndex-5;
+                            }else {
+                                startingIndex = 0;
                             }
-                            signal = true;
 
-                            runOnUiThread(() -> {
-                                if(switchNumber != 4){
-                                    fragment_player = new Fragment_Player(players.get(switchNumber).getMatrixArray(), players.get(switchNumber).getName());
-                                    FragmentTransaction ft = fragmentManager.beginTransaction();
-                                    ft.replace(R.id.fragmentCont, fragment_player);
-                                    ft.commit();
+                            for(int j = startingIndex; j<finalIndex; j++){
+                                toDisp = toDisp + streamInt[j] + " ";
+                            }
+                            numberList.setText(toDisp);
+                            newNumber.setText(Integer.toString(number));
+                        });
+
+                        //CHECK THREADS
+                        Thread[] checkWinThreadArray = new checkWinThread[players.size()];
+                        for(int j=0; j<players.size(); j++){
+                            checkWinThreadArray[j] = new checkWinThread(number, players.get(j));
+                            checkWinThreadArray[j].start();
+                        }
+
+                        boolean signal = false;
+                        while(!signal){
+                            if(numberOfCheckedClient == players.size()){
+                                for(int j=0; j<checkWinThreadArray.length; j++){
+                                    checkWinThreadArray[j].interrupt();
                                 }
-                            });
+                                signal = true;
+
+                                runOnUiThread(() -> {
+                                    if(switchNumber != 4){
+                                        fragment_player = new Fragment_Player(players.get(switchNumber).getMatrixArray(), players.get(switchNumber).getName());
+                                        FragmentTransaction ft = fragmentManager.beginTransaction();
+                                        ft.replace(R.id.fragmentCont, fragment_player);
+                                        ft.commit();
+                                    }
+                                });
+                            }
+                        }
+
+                        try {
+                            Thread.sleep(1000);
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
                     }
-                    index++;
+                    finished = true;
                 }
             }
-
             winnerIs();
         }
     });
 
     public void winnerIs(){
-        System.out.println("winneris method");
-
         gameLoop.interrupt();
-        for(Player user : players){
-            user.getThreadReceiver().interrupt();
-        }
-
         Intent winnerIntent = new Intent(this, WinnerActivity.class);
-        System.out.println("DEBUG 173 WINNERINTENT");
         winnerIntent.putExtra(WINNER, winnermsg);
         startActivity(winnerIntent);
     }
@@ -210,12 +219,9 @@ public class GameLoopActivity extends AppCompatActivity {
         }
     });
 
-    public static void setProceed(){
-        proceed = true;
-    }
-
     public static void setBingo(String name){
         System.out.println("setted bingo");
         win = true;
     }
+
 }

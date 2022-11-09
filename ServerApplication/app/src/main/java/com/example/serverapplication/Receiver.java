@@ -3,7 +3,7 @@ package com.example.serverapplication;
 import java.io.BufferedReader;
 
 public class Receiver extends Thread{
-    private BufferedReader fromClient;
+    private final BufferedReader fromClient;
     private String playerNAME;
     private int playerMatrix = 0;
 
@@ -17,7 +17,7 @@ public class Receiver extends Thread{
      */
     @Override
     public void run(){
-        String message = "";
+        String message;
         boolean firstInput = true;
 
         while(!Thread.interrupted()){
@@ -25,17 +25,25 @@ public class Receiver extends Thread{
                 message = fromClient.readLine();
                 System.out.println("DEBUG Receiver, message: " + message);
 
-                if(message != null){
-                    if(firstInput){
+                if(message != null) {
+
+                    if (firstInput) {
+
                         setPlayerName(message);
                         firstInput = false;
-                    }else if(message.equals("cardsnumber")){
+
+                    } else if (message.equals("cardsnumber")) {
+
                         setPlayerMatrix(Integer.parseInt(fromClient.readLine()));
-                    }else if(message.equalsIgnoreCase("bingo")){
-                        System.out.println("bingo message received");
+
+                    } else if (message.equalsIgnoreCase("bingo")) {
+
                         notifyGameLoopBingo(getPlayerNAME());
+
                     }else{
-                        notifyGameLoopProceed();
+
+                        System.out.println(message);
+
                     }
                 }
             } catch (Exception e) {
@@ -46,10 +54,6 @@ public class Receiver extends Thread{
 
     public static void notifyGameLoopBingo(String name){
         GameLoopActivity.setBingo(name);
-    }
-
-    public static void notifyGameLoopProceed(){
-        GameLoopActivity.setProceed();
     }
 
     public void setPlayerName(String NAME){

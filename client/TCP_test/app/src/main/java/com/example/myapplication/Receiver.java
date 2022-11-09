@@ -4,15 +4,10 @@ import java.io.BufferedReader;
 import java.util.ArrayList;
 
 public class Receiver extends Thread{
-    private BufferedReader fromServer;
+    private final BufferedReader fromServer;
 
     private String[] parsedMatrix;
-    private ArrayList<Matrix> matrixArrayList;
-    private Object lock = new Object();
-    //private boolean flag = false;
     private String exitedNumbers;
-    private int index = 0;
-    private int exitedNumber;
 
     public Receiver(BufferedReader from){
         this.fromServer = from;
@@ -21,7 +16,7 @@ public class Receiver extends Thread{
     @Override
     public void run(){
         while( !Thread.currentThread().isInterrupted() ){
-            String msg = "";
+            String msg;
 
             try{
                 msg = fromServer.readLine();
@@ -29,57 +24,69 @@ public class Receiver extends Thread{
 
                 if(msg != null){
 
-                    if(msg.equals("start")){
-                        //System.out.println("received start message from server");
-                        matrixArrayList = new ArrayList<>();
-                        sendStartSignalCards();
+                    switch (msg) {
+                        case "start":
 
-                    }else if (msg.equals("matrixstart")) {
+                            sendStartSignalCards();
 
-                        int max = CardSelectionActivity.getCardsNumber();
+                            break;
+                        case "matrixstart":
 
-                        parsedMatrix = new String[max];
+                            int max = CardSelectionActivity.getCardsNumber();
 
-                        for (int i=0; i<max; i++) {
-                            setMatrixes(fromServer.readLine(), i);
-                        }
+                            parsedMatrix = new String[max];
 
-                    }else if(msg.equals("matrixfinish")){
-                        setParsedMatrix();
+                            for (int i = 0; i < max; i++) {
+                                setMatrixes(fromServer.readLine(), i);
+                            }
 
-                        GameLoopActivity.setParsedArray(parsedMatrix);
+                            break;
+                        case "matrixfinish":
 
-                        synchronized (GameLoopActivity.objMatrix){
-                            GameLoopActivity.flagMatrix = true;
-                            GameLoopActivity.objMatrix.notify();
-                        }
+                            setParsedMatrix();
 
-                    }else if(msg.equals("startstream")) {
-                        //setNumber(msg);
-                        //----------------------------
-                        //una volta ricevute le tabelle il server manda i seguenti messaggi;
-                        //"startstream"
-                        //90 messaggi con l'ordine di uscita di tutti i numeri
-                        //li memorizzo in array in modo tale da poterli riprendere dal gameloop senza static methods
-                        //----------------------------
-                        exitedNumbers = fromServer.readLine();
-                    }else if(msg.equals("finishstream")) {
+                            GameLoopActivity.setParsedArray(parsedMatrix);
 
-                        GameLoopActivity.setStream(exitedNumbers.split(" "));
+                            synchronized (GameLoopActivity.objMatrix) {
+                                GameLoopActivity.flagMatrix = true;
+                                GameLoopActivity.objMatrix.notify();
+                            }
 
-                        synchronized (GameLoopActivity.objStream){
-                            GameLoopActivity.flagStream = true;
-                            GameLoopActivity.objStream.notify();
-                        }
-                    }else if(msg.equals("startloop")){
-                        //System.out.println("received startloop message from server");
-                        //LobbyActivity.flag = true;
-                        sendStartSignalLoop();
-                        //setExitedNumber(Integer.parseInt(fromServer.readLine()));
-                    }else if(msg.equals("completed")){
-                        sendBingoSignal();
-                    }else if(msg.equals("winnerIs")){
-                        startWinnerAct(fromServer.readLine());
+                            break;
+                        case "startstream":
+
+                            exitedNumbers = fromServer.readLine();
+
+                            break;
+                        case "finishstream":
+
+                            GameLoopActivity.setStream(exitedNumbers.split(" "));
+
+                            synchronized (GameLoopActivity.objStream) {
+                                GameLoopActivity.flagStream = true;
+                                GameLoopActivity.objStream.notify();
+                            }
+
+                            break;
+                        case "startloop":
+
+                            sendStartSignalLoop();
+
+                            break;
+                        case "completed":
+
+                            sendBingoSignal();
+
+                            break;
+                        case "winnerIs":
+
+                            startWinnerAct(fromServer.readLine());
+
+                            break;
+                        case "num":
+
+                            notifyGameLoopToProceed();
+                            break;
                     }
                 }
             }catch(Exception e){
@@ -88,7 +95,12 @@ public class Receiver extends Thread{
         }
     }
 
+    public static void notifyGameLoopToProceed(){
+        GameLoopActivity.setProceed();
+    }
+
     public void sendStartSignalCards(){ LobbyActivity.setStartCards(); }
+
     public void sendStartSignalLoop(){ PreGameLobbyActivity.setStartLoop(); }
 
     public static void sendBingoSignal(){
@@ -99,29 +111,19 @@ public class Receiver extends Thread{
         GameLoopActivity.winerAct(name);
     }
 
-    public void setExitedNumber(int num){
-        exitedNumber = num;
-    }
-
-    /*public String getNumber(){
-        return exitedNumbers[index];
-    }
-
-     */
-
     public void setMatrixes(String parsedArray, int index){
         parsedMatrix[index] = parsedArray;
     }
 
     public void setParsedMatrix(){
-        ArrayList<Matrix> returnList = new ArrayList<Matrix>();
+        ArrayList<Matrix> returnList = new ArrayList<>();
 
-        for(int j=0; j<parsedMatrix.length; j++){
+        for (String matrix : parsedMatrix) {
 
-            String[] tmpArr = parsedMatrix[j].split(" ");
+            String[] tmpArr = matrix.split(" ");
             Matrix.MatrixNumbers[] numbersArray = new Matrix.MatrixNumbers[tmpArr.length];
 
-            for(int n=0; n<9; n++){
+            for (int n = 0; n < 9; n++) {
                 numbersArray[n] = new Matrix.MatrixNumbers(Integer.parseInt(tmpArr[n]), false);
             }
 
@@ -129,14 +131,5 @@ public class Receiver extends Thread{
 
             returnList.add(tmp);
         }
-    }
-
-    public ArrayList<Matrix> getMatrix(){
-        int iter = 0;
-        while(matrixArrayList.isEmpty()){
-            iter++;
-        }
-        //System.out.println("iter: " + iter);
-        return matrixArrayList;
     }
 }

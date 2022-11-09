@@ -28,15 +28,15 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class LobbyActivity extends AppCompatActivity {
 
-    ServerSocket mySocket;
-    Button startButton;
-    TextView playNum;
-    TextView title;
-    TextView timer;
+    public static ServerSocket mySocket;
+    private Button startButton;
+    private TextView playNum;
+    private TextView title;
+    private TextView timer;
 
-    RecyclerView recyclerView;
-    RecyclerView.LayoutManager layoutManager;
-    PlayerAdapter playersAdapter;
+    private RecyclerView recyclerView;
+    private RecyclerView.LayoutManager layoutManager;
+    private PlayerAdapter playersAdapter;
 
     public static ArrayList<Player> players;
 
