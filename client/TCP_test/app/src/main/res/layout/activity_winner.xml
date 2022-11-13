@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:backgroundTint="@color/main_bkg"
     tools:context=".WinnerActivity">
 
     <androidx.constraintlayout.widget.Guideline
@@ -21,7 +22,8 @@
         android:id="@+id/textView6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="THE WINNER IS"
+        android:text="@string/winner_title"
+        android:textColor="@color/black"
         android:textSize="50sp"
         app:layout_constraintBottom_toTopOf="@+id/guideline4"
         app:layout_constraintEnd_toEndOf="parent"
@@ -30,9 +32,12 @@
 
     <TextView
         android:id="@+id/winnerNameTV"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="winnername"
+        android:background="@drawable/selected_ball"
+        android:text="@string/winner_name"
+        android:textAlignment="center"
+        android:textColor="@color/white"
         android:textSize="70sp"
         app:layout_constraintBottom_toTopOf="@+id/guideline4"
         app:layout_constraintEnd_toEndOf="parent"
@@ -43,7 +48,8 @@
         android:id="@+id/resetApp_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="close app"
+        android:background="@drawable/btn_background"
+        android:text="@string/close_btn"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

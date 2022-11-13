@@ -7,10 +7,11 @@
     tools:context=".WinnerActivity">
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/textView_winneris"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="THE WINNER IS..."
+        android:text="@string/title_winner"
+        android:textColor="@color/black"
         android:textSize="40sp"
         app:layout_constraintBottom_toTopOf="@+id/winnerName"
         app:layout_constraintEnd_toEndOf="parent"
@@ -19,8 +20,12 @@
 
     <TextView
         android:id="@+id/winnerName"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/fullyellow"
+        android:text="@string/name"
+        android:textAlignment="center"
+        android:textColor="@color/black"
         android:textSize="60sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -40,7 +45,8 @@
         android:id="@+id/restart_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Restart server"
+        android:background="@drawable/btn_background"
+        android:text="@string/reset_btn"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

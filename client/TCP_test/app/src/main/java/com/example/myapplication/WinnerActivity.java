@@ -23,12 +23,19 @@ public class WinnerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_winner);
 
+        getSupportActionBar().hide();
+
         ctx = this;
 
         Intent intent = getIntent();
         String WINNER = intent.getStringExtra(GameLoopActivity.WINNER);
         winnerName = findViewById(R.id.winnerNameTV);
-        winnerName.setText(WINNER);
+
+        if(WINNER.equals("timeout")){
+            winnerName.setText("!!! TIMEOUT !!!");
+        }else{
+            winnerName.setText(WINNER);
+        }
 
         mySender = new Sender(LobbyActivity.getServer().getToServer());
 
@@ -37,7 +44,6 @@ public class WinnerActivity extends AppCompatActivity {
         resetButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //mySender.sendMessage("reset","reset");
                 Intent mainIntent = new Intent(ctx, MainActivity.class);
                 ctx.startActivity(mainIntent);
             }

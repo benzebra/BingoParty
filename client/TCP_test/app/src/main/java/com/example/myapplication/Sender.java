@@ -10,23 +10,6 @@ public class Sender {
     }
 
     public void sendMessage(String type, String content){
-        //message switch
-
-        /*
-        if(type.equals("name")){
-
-            toServer.println(content);
-
-        }else if(type.equals("cardsNumber")){
-
-            toServer.println(content);
-
-        }else if(type.equals("")){
-
-        }
-
-         */
-
         toServer.println(content);
 
         if(!content.equals("reset")){

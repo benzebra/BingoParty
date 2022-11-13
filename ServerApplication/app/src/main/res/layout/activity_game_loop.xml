@@ -19,11 +19,13 @@
         android:id="@+id/newNumber"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="@drawable/fullyellow"
         android:gravity="center"
-        android:paddingLeft="10dp"
+        android:paddingStart="10dp"
         android:paddingEnd="10dp"
-        android:text="0"
+        android:text="@string/num"
         android:textAlignment="center"
+        android:textColor="@color/black"
         android:textSize="55sp"
         app:layout_constraintBottom_toTopOf="@+id/guideline10"
         app:layout_constraintEnd_toEndOf="parent"
@@ -52,10 +54,10 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="[99, 99, 99, 99, 99]"
+            android:text="@string/exited_num"
             android:textAlignment="center"
             android:textColor="@color/black"
-            android:textSize="48dp" />
+            android:textSize="48sp" />
 
         <TextView
             android:id="@+id/textView7"
@@ -66,10 +68,10 @@
     </LinearLayout>
 
     <TextView
-        android:id="@+id/textView4"
+        android:id="@+id/questionTV"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Player?"
+        android:text="@string/questionTV"
         android:textAlignment="center"
         android:textColor="@color/black"
         android:textSize="25sp"
@@ -86,7 +88,7 @@
         app:layout_constraintBottom_toTopOf="@+id/fragmentCont"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView4">
+        app:layout_constraintTop_toBottomOf="@+id/questionTV">
 
         <Button
             android:id="@+id/player1_btn"
@@ -94,7 +96,8 @@
             android:layout_height="wrap_content"
             android:layout_margin="15sp"
             android:layout_weight="1"
-            android:text="1"
+            android:background="@drawable/btn_background"
+            android:text="@string/player1_btn"
             android:textSize="40sp" />
 
         <Button
@@ -103,7 +106,8 @@
             android:layout_height="wrap_content"
             android:layout_margin="15sp"
             android:layout_weight="1"
-            android:text="2"
+            android:background="@drawable/btn_background"
+            android:text="@string/player2_btn"
             android:textSize="40sp" />
 
         <Button
@@ -112,7 +116,8 @@
             android:layout_height="wrap_content"
             android:layout_margin="15sp"
             android:layout_weight="1"
-            android:text="3"
+            android:background="@drawable/btn_background"
+            android:text="@string/player3_btn"
             android:textSize="40sp" />
 
         <Button
@@ -121,7 +126,8 @@
             android:layout_height="wrap_content"
             android:layout_margin="15sp"
             android:layout_weight="1"
-            android:text="4"
+            android:background="@drawable/btn_background"
+            android:text="@string/player4_btn"
             android:textSize="40sp" />
     </LinearLayout>
 
@@ -133,6 +139,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
+        tools:layout="@layout/fragment__s_t_d" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -12,4 +12,8 @@
     <color name="ball_bg">#ffe680</color>
     <color name="lighter_grey">#a6a6a6</color>
     <color name="selected_ball">#004080</color>
+
+    <color name="btn_bkg">#0d0d0d</color>
+    <color name="secondary_black">#262626</color>
+    <color name="main_bkg">#e6e6e6</color>
 </resources>

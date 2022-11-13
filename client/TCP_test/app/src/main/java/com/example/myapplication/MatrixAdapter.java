@@ -17,6 +17,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
+/**
+ * MatrixAdapter
+ *
+ * Per la renderizzazione delle cartelle nel GameLoop
+ */
 public class MatrixAdapter extends RecyclerView.Adapter<MatrixAdapter.MatrixViewHolder> {
 
     //ViewHolder class
@@ -69,7 +74,6 @@ public class MatrixAdapter extends RecyclerView.Adapter<MatrixAdapter.MatrixView
         Drawable toExtract = ResourcesCompat.getDrawable(res, R.drawable.to_select_ball, null);
 
         Matrix.MatrixNumbers[] myMatrix = dataset.get(position).getMyMatrix();
-        //System.out.println("DEBUG ADAPTER:65, matrix: " + dataset.get(position));
 
         for(int i=0; i<myMatrix.length; i++){
 
@@ -78,21 +82,16 @@ public class MatrixAdapter extends RecyclerView.Adapter<MatrixAdapter.MatrixView
             toModify.setText(toPut);
 
 
-            //System.out.println("Adapter:81 - " + myMatrix[i].getFlag());
             if(myMatrix[i].getFlag()){
                 toModify.setBackground(extracted);
-                //toModify.setBackground(null);
-                //((TextView) toModify).setText(toPut);
             }else{
                 toModify.setBackground(toExtract);
-                //((TextView) toModify).setText(toPut);
             }
         }
     }
 
     @Override
     public int getItemCount() {
-        // 9
         return dataset.size();
     }
 }

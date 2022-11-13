@@ -22,6 +22,8 @@ public class PreGameLobbyActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pre_game_lobby);
 
+        getSupportActionBar().hide();
+
         tw = findViewById(R.id.introTVpregame);
         waiting = findViewById(R.id.threePointspregame);
 

@@ -1,5 +1,11 @@
 package com.example.myapplication;
 
+/**
+ * Matrix
+ *
+ * Oggetto creato ad hoc per poter gestire l eliste di numeri (o cartelle), ricevute dal server e
+ * con diverse possibiltà di renderizzazione (se il numero è estratto oppure no)
+ */
 public class Matrix {
 
     public static class MatrixNumbers{

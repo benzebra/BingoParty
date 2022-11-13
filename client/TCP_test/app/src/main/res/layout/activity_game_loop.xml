@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:backgroundTint="@color/main_bkg"
     tools:context=".GameLoopActivity">
 
     <TextView
@@ -41,8 +42,9 @@
         android:id="@+id/BingoButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="@drawable/btn_background"
         android:enabled="true"
-        android:text="BINGO"
+        android:text="@string/bingo_btn"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/guideline3"
         app:layout_constraintEnd_toEndOf="parent"

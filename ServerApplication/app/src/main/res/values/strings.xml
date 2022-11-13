@@ -5,4 +5,39 @@
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!-- Main -->
+    <string name="title_main">BINGO SERVER</string>
+    <string name="open">OPEN</string>
+    <string name="text">text</string>
+
+    <!-- Lobby -->
+    <string name="title">Working on port: 9999</string>
+    <string name="timer">10</string>
+    <string name="close_btn">Close connection</string>
+    <string name="playerCounter">0 / 4</string>
+    <string name="start">START</string>
+
+    <!-- PreGame -->
+    <string name="title_pre">SENDING CARDS</string>
+    <string name="threedot">...</string>
+    <string name="play">PLAY</string>
+
+    <!-- Game Loop -->
+    <string name="num">99</string>
+    <string name="exited_num">[99, 99, 99, 99, 99]</string>
+    <string name="questionTV">Player?</string>
+    <string name="player1_btn">1</string>
+    <string name="player2_btn">2</string>
+    <string name="player3_btn">3</string>
+    <string name="player4_btn">4</string>
+
+    <!-- Winner -->
+    <string name="title_winner">THE WINNER IS...</string>
+    <string name="name">winnerName</string>
+    <string name="reset_btn">RESTART SERVER</string>
+
+    <!-- Fragments -->
+    <string name="playername">*playerName*</string>
+    <string name="fragment_std">Select the player number to display the fields....</string>
 </resources>

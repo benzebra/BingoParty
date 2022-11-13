@@ -1,7 +1,5 @@
 package com.example.serverapplication;
 
-import androidx.fragment.app.Fragment;
-
 import java.io.BufferedReader;
 import java.io.PrintWriter;
 import java.net.Socket;

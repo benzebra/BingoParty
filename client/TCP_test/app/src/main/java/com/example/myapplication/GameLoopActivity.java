@@ -15,22 +15,21 @@ import java.util.ArrayList;
 
 public class GameLoopActivity extends AppCompatActivity {
 
-    //private static ArrayList<int[]> matrixList;    //---------------> trasforma in elementi Matrix
-    /*
-    ArrayList<int[]>       ->   ArrayList<Matrix[]>
-    Matrix[]               ->   Matrix = Lista di Matrix
-    Matrix                 ->   Lista di MatrixNumbers
-    MatrixNumbers          ->   (int numero, boolean flagExited, String numero.toString())
+    /**
+     * ArrayList<int[]>       ->   ArrayList<Matrix[]>
+     * Matrix[]               ->   Matrix = Lista di Matrix
+     * Matrix                 ->   Lista di MatrixNumbers
+     * MatrixNumbers          ->   (int numero, boolean flagExited, String numero.toString())
      */
     private ArrayList<Matrix> matrixArrayList;
+
     private TextView extract;
-
-    private static boolean proceed = false;
-
     private static Context myContext;
 
+    public static String WINNER;
     private Button bingo_btn;
     private static boolean win = false;
+    private static boolean proceed = false;
 
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
@@ -38,39 +37,15 @@ public class GameLoopActivity extends AppCompatActivity {
 
     private Sender mySender;
     private Receiver myReceiver;
-
+    private int[] streamInt;
     private static String[] parsedArray;
     private static String[] stream;
 
-    private int[] streamInt;
-
+    //soncronizzazione
     public static final Object objMatrix = new Object();
     public static final Object objStream = new Object();
-    public static Object objStreamInt = new Object();
     public static boolean flagMatrix = false;
     public static boolean flagStream = false;
-    public static boolean flagStreamInt = false;
-
-
-    public static void setParsedArray(String[] arr){
-        parsedArray = arr;
-    }
-    public String[] getParsedArray(){
-        return parsedArray;
-    }
-
-    public static void setStream(String[] arr){
-        stream = arr;
-    }
-    public String[] getStream(){
-        return stream;
-    }
-
-    public int[] getStreamInt(){
-        return streamInt;
-    }
-
-    public static String WINNER;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -143,7 +118,11 @@ public class GameLoopActivity extends AppCompatActivity {
 
     }
 
-
+    /**
+     * parseToList
+     *
+     * Trasforma la stream in object Matrix
+     */
     public void parseToList(){
         String[] array = getParsedArray();
         for(int i=0; i<array.length; i++){
@@ -173,11 +152,17 @@ public class GameLoopActivity extends AppCompatActivity {
         streamInt = newArr;
     }
 
+    //imposta il numero nella grafica
     public void setMainNumber(int num){
         extract.setText(Integer.toString(num));
         findNumber(num);
     }
 
+    /**
+     * findNumber
+     *
+     * Cerca il numero estratto all'interno delle Matrix
+     */
     public void findNumber(int num){
 
         Matrix.MatrixNumbers[] tmpMatrix;
@@ -210,25 +195,6 @@ public class GameLoopActivity extends AppCompatActivity {
                 index++;
             }
         }
-        /*
-        int[] numbersStream = getStreamInt();
-
-        for(int i=0; i<numbersStream.length; i++){
-
-            //faccio uscire un nuovo numero
-            setMainNumber(numbersStream[i]);
-
-            //invio il riferimento del nuovo numero al server
-            mySender.sendMessage("exitedNumber", Integer.toString(i));
-
-            //attendo 2 secondi prima del prossimo numero
-            try {
-                Thread.sleep(1000);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-         */
     });
 
     public static void notifyBingoButton(){
@@ -241,7 +207,27 @@ public class GameLoopActivity extends AppCompatActivity {
         myContext.startActivity(winnerIntent);
     }
 
+
+    //GETTER e SETTER
     public static void setProceed(){
         proceed = true;
+    }
+
+    public static void setParsedArray(String[] arr){
+        parsedArray = arr;
+    }
+    public String[] getParsedArray(){
+        return parsedArray;
+    }
+
+    public static void setStream(String[] arr){
+        stream = arr;
+    }
+    public String[] getStream(){
+        return stream;
+    }
+
+    public int[] getStreamInt(){
+        return streamInt;
     }
 }

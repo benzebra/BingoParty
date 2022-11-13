@@ -20,7 +20,6 @@ public class Receiver extends Thread{
 
             try{
                 msg = fromServer.readLine();
-                System.out.println("message from server: " + msg);
 
                 if(msg != null){
 

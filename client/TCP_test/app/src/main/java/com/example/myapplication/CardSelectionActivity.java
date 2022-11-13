@@ -2,6 +2,7 @@ package com.example.myapplication;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -15,10 +16,10 @@ public class CardSelectionActivity extends AppCompatActivity {
 
     public static String EXTRA_MESSAGE;
     public static String EXTRA_MESSAGE_NAME;
+
     private Button EnterButton;
     private Button Increase;
     private Button Decrease;
-
     private TextView CardsNumber;
 
     private Server myServer;
@@ -26,12 +27,18 @@ public class CardSelectionActivity extends AppCompatActivity {
     private Receiver myReceiver;
 
     private static int number;
+    public Context ctx;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_card_selection);
 
+        getSupportActionBar().hide();
+
+        ctx = this;
+
+        //Buttons
         EnterButton = findViewById(R.id.enter_button);
         Increase = findViewById(R.id.increase);
         Decrease = findViewById(R.id.decrease);
@@ -40,56 +47,62 @@ public class CardSelectionActivity extends AppCompatActivity {
 
         myServer = LobbyActivity.getServer();
         mySender = new Sender(myServer.getToServer());
-        //System.out.println("DEBUG CardSelection:41, this is mysender: " + mySender.toString());
         myReceiver = LobbyActivity.getReceiver();
-    }
 
-    //Incremento il numero di cartelle ( max: 4 )
-    public void inc(View view){
-        int tmpCards = Integer.parseInt(CardsNumber.getText().toString());
 
-        if(tmpCards != 4) {
-            int increasedCards = tmpCards + 1;
-            CardsNumber.setText(Integer.toString(increasedCards));
-        }else{
-            Toast toastMax = new Toast(this);
-            toastMax.setText("Numero massimo di tabelle raggiunto");
-            toastMax.show();
-        }
-    }
+        EnterButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                number = Integer.parseInt(CardsNumber.getText().toString());
 
-    //Decremento il numero di cartelle ( min: 1 )
-    public void dec(View view){
-        int tmpCards = Integer.parseInt(CardsNumber.getText().toString());
+                Thread sendToServer = new Thread(() -> {
+                    mySender.sendMessage("cardsNumber", "cardsnumber");
+                    mySender.sendMessage("cardsNumber", Integer.toString(getCardsNumber()));
+                });
+                sendToServer.start();
 
-        if(tmpCards != 1) {
-            int decreasedCards = tmpCards - 1;
-            CardsNumber.setText(Integer.toString(decreasedCards));
-        }else{
-            Toast toastMin = new Toast(this);
-            toastMin.setText("Numero minimo di tabelle raggiunto");
-            toastMin.show();
-        }
-    }
-
-    public void play(View view){
-        number = Integer.parseInt(CardsNumber.getText().toString());
-
-        /*
-        Intent gameIntent = new Intent(this, GameLoopActivity.class);
-        startActivity(gameIntent);
-         */
-
-        Thread sendToServer = new Thread(() -> {
-            mySender.sendMessage("cardsNumber", "cardsnumber");
-            mySender.sendMessage("cardsNumber", Integer.toString(getCardsNumber()));
+                Intent lobbyIntent = new Intent(ctx, PreGameLobbyActivity.class);
+                lobbyIntent.putExtra(EXTRA_MESSAGE, "cardselected");
+                lobbyIntent.putExtra(EXTRA_MESSAGE_NAME, LobbyActivity.getNameF());
+                startActivity(lobbyIntent);
+            }
         });
-        sendToServer.start();
 
-        Intent lobbyIntent = new Intent(this, PreGameLobbyActivity.class);
-        lobbyIntent.putExtra(EXTRA_MESSAGE, "cardselected");
-        lobbyIntent.putExtra(EXTRA_MESSAGE_NAME, LobbyActivity.getNameF());
-        startActivity(lobbyIntent);
+
+        //Incremento il numero di cartelle ( max: 4 )
+        Increase.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int tmpCards = Integer.parseInt(CardsNumber.getText().toString());
+
+                if(tmpCards != 4) {
+                    int increasedCards = tmpCards + 1;
+                    CardsNumber.setText(Integer.toString(increasedCards));
+                }else{
+                    Toast toastMax = new Toast(ctx);
+                    toastMax.setText("Numero massimo di tabelle raggiunto");
+                    toastMax.show();
+                }
+            }
+        });
+
+
+        //Decremento il numero di cartelle ( min: 1 )
+        Decrease.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int tmpCards = Integer.parseInt(CardsNumber.getText().toString());
+
+                if(tmpCards != 1) {
+                    int decreasedCards = tmpCards - 1;
+                    CardsNumber.setText(Integer.toString(decreasedCards));
+                }else{
+                    Toast toastMin = new Toast(ctx);
+                    toastMin.setText("Numero minimo di tabelle raggiunto");
+                    toastMin.show();
+                }
+            }
+        });
     }
 
     public static int getCardsNumber(){

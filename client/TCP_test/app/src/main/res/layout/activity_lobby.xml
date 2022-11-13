@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:backgroundTint="@color/main_bkg"
     tools:context=".LobbyActivity">
 
     <TextView
@@ -28,7 +29,8 @@
         android:id="@+id/threePoints"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="..."
+        android:text="@string/threeDots"
+        android:textColor="@color/black"
         android:textSize="90sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -39,7 +41,8 @@
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="PLAYER LOBBY"
+        android:text="@string/lobby_title"
+        android:textColor="@color/black"
         android:textSize="45sp"
         app:layout_constraintBottom_toTopOf="@+id/introTV"
         app:layout_constraintEnd_toEndOf="parent"

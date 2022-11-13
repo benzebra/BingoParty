@@ -11,8 +11,31 @@
 
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
-    <string name="edit_message">Enter a message</string>
+    <string name="edit_message">Enter your name</string>
     <string name="button_send">SEND</string>
     <string name="title">BINGO PARTY</string>
     <string name="subtitle">Inserisci il tuo nome</string>
+
+    <!-- Winner -->
+    <string name="winner_title">THE WINNER IS</string>
+    <string name="winner_name">WinnerName</string>
+    <string name="close_btn">CLOSE CONNECTION</string>
+
+    <!-- PreGameLobby -->
+    <string name="title_preGL">PRE GAME LOBBY</string>
+    <string name="threeDots">...</string>
+
+    <!-- Lobby -->
+    <string name="lobby_title">PLAYER LOBBY</string>
+
+    <!-- GameLoop -->
+    <string name="bingo_btn">BINGO</string>
+
+    <!-- CardSelection -->
+    <string name="cardsel_title">NUMERO TABELLE:</string>
+    <string name="inc">+</string>
+    <string name="dec">-</string>
+    <string name="num">1</string>
+    <string name="enter_btn">ENTER</string>
+
 </resources>

@@ -3,6 +3,7 @@ package com.example.serverapplication;
 import java.io.BufferedReader;
 
 public class Receiver extends Thread{
+
     private final BufferedReader fromClient;
     private String playerNAME;
     private int playerMatrix = 0;
@@ -11,9 +12,9 @@ public class Receiver extends Thread{
         this.fromClient = fromClient;
     }
 
-    /*  Messages recived by the client are 2 different types:
-     *   1. firstInput (Client name, [String])
-     *   2. GAME MATRIX NUMBER (number of cards choosen by Client, 0 < # < 5, [int])
+    /**
+     * I messaggi ricevuti possono essere di diverso tipo, grazie a questo Thread quando li ricevo
+     * li smisto anche, a seconda del loro utilizzo.
      */
     @Override
     public void run(){
@@ -23,26 +24,21 @@ public class Receiver extends Thread{
         while(!Thread.interrupted()){
             try{
                 message = fromClient.readLine();
-                System.out.println("DEBUG Receiver, message: " + message);
 
                 if(message != null) {
 
                     if (firstInput) {
-
+                        //nome
                         setPlayerName(message);
                         firstInput = false;
 
-                    } else if (message.equals("cardsnumber")) {
-
+                    } else if (message.equalsIgnoreCase("cardsnumber")) {
+                        //numero schede
                         setPlayerMatrix(Integer.parseInt(fromClient.readLine()));
 
                     } else if (message.equalsIgnoreCase("bingo")) {
-
+                        //bingo!
                         notifyGameLoopBingo(getPlayerNAME());
-
-                    }else{
-
-                        System.out.println(message);
 
                     }
                 }
@@ -56,6 +52,7 @@ public class Receiver extends Thread{
         GameLoopActivity.setBingo(name);
     }
 
+
     public void setPlayerName(String NAME){
         this.playerNAME = NAME;
     }
@@ -63,6 +60,7 @@ public class Receiver extends Thread{
     public String getPlayerNAME(){
         return this.playerNAME;
     }
+
 
     public void setPlayerMatrix(int num){
         this.playerMatrix = num;

@@ -9,12 +9,14 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
-    public static final String EXTRA_MESSAGE = "com.example.myfirstapp.MESSAGE";
+    public static final String EXTRA_MESSAGE = "name";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        getSupportActionBar().hide();
     }
 
     public void sendMessage(View view){
@@ -22,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
         EditText editText = (EditText) findViewById(R.id.editTextTextPersonName);
         String NAME = editText.getText().toString();
 
-        if(NAME.length() > 0){
+        if(NAME.length() > 0 && !NAME.equals("timeout")){
             intent.putExtra(EXTRA_MESSAGE, NAME);
             startActivity(intent);
         }else {

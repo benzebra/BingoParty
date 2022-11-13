@@ -9,7 +9,6 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import java.io.PrintWriter;
-import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
@@ -17,18 +16,19 @@ import java.util.Random;
 public class PreGameActivity extends AppCompatActivity {
 
     private ArrayList<Player> playerArrayList;
+    private String field;
 
     private TextView threePointsTV;
     private Button playButton;
-
-    private String field;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pregame);
 
-        threePointsTV = findViewById(R.id.threePointsTV);
+        getSupportActionBar().hide();
+
+        threePointsTV = findViewById(R.id.threeDotsTV);
         playButton = findViewById(R.id.playButton);
 
         playerArrayList = LobbyActivity.getPlayers();
@@ -49,9 +49,14 @@ public class PreGameActivity extends AppCompatActivity {
     }
 
     /**
-     * Send the start signal ("start"), receive the matrix number (0 < x < 5) and assign to every player
+     * sendStartAndMatrix Thread
+     *
+     *  1. Invia il segnale di start (messaggio "start")
+     *  2. Riceve il numero di matrici per ogni giocatore (0 < x < 5)
+     *  3. Invia le matrici ad ogni giocatore
      */
     Thread sendStartAndMatrix = new Thread(() -> {
+        //invio "start"
         for (Player value : playerArrayList) {
             if (value != null) {
                 value.getSender().println("start");
@@ -59,6 +64,7 @@ public class PreGameActivity extends AppCompatActivity {
             }
         }
 
+        //ricevo numero matrici e le invio
         boolean completed = false;
         boolean[] collected = new boolean[playerArrayList.size()];
         int count = 0;
@@ -85,6 +91,7 @@ public class PreGameActivity extends AppCompatActivity {
             }
         }
 
+        //una volta terminato posso far partire il gameloop
         runOnUiThread(() -> {
             GameLoopActivity.setStream(getField());
             playButton.setEnabled(true);
@@ -99,6 +106,12 @@ public class PreGameActivity extends AppCompatActivity {
         sendMatrix(myPlayer.getSender(), myPlayer.getMatrixArray());
     }
 
+    /**
+     * createField
+     *
+     * Creo l'ordine con cui escono i numeri estratti (field) e lo inoltro ai giocatori.
+     * Utilizzo questo metodo per evitare troppo traffico di dati durante la fase di gioco.
+     */
     public String createField(){
         boolean[] fieldCheck = new boolean[90];
         Arrays.fill(fieldCheck, false);
@@ -121,10 +134,12 @@ public class PreGameActivity extends AppCompatActivity {
     }
 
     /**
-     * Create the ArrayList of int[] associated to the client
+     * newMatrix
      *
-     * @param /int/ num (numebr of matrixes)
-     * @return ArrayList of matrixes
+     * Creo l'ArrayList di int[] associata ad ogni client
+     *
+     * @param num numero di matrici
+     * @return ArrayList di matrici
      */
     public ArrayList<int[]> newMatrix(int num){
         Random generator = new Random();
@@ -152,12 +167,14 @@ public class PreGameActivity extends AppCompatActivity {
         return matrixArray;
     }
 
+    /**
+     * sendMatrix
+     *
+     * first message : "matrixstart"
+     * Invio ArrayList separatamente (matrixnumber * 9 messages)
+     * last message : "matrixfinish"
+     */
     public void sendMatrix(PrintWriter sender, ArrayList<int[]> myList){
-        /**
-         * first message : "matrixstart"
-         * send the ArrayList separatly (matrixnumber * 9 messages)
-         * last message : "matrixfinish"
-         */
         sender.println("matrixstart");
         sender.flush();
 
@@ -172,9 +189,11 @@ public class PreGameActivity extends AppCompatActivity {
     }
 
     /**
-     * Integer array toString(), more easy sending to client
+     * stringify
      *
-     * @param /[int[]]/ array
+     * toString() di int[], risulta più facile inviarlo al client
+     *
+     * @param array Array di int
      * @return [String] array
      */
     public String stringify(int[] array){
@@ -199,6 +218,7 @@ public class PreGameActivity extends AppCompatActivity {
         sender.flush();
     }
 
+    //Grafica dei 3 punti che si alternano come fosse un caricamento
     Thread threePointsThread = new Thread(() -> {
         TextView space = threePointsTV;
         try {
@@ -215,6 +235,7 @@ public class PreGameActivity extends AppCompatActivity {
         }
     });
 
+    //GETTER e SETTER di field
     public String getField(){
         return field;
     }

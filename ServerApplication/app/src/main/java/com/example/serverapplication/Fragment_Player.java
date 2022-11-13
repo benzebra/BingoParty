@@ -60,8 +60,6 @@ public class Fragment_Player extends Fragment {
         layoutManager = new LinearLayoutManager(this.getContext(), LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
 
-        //print(myList);
-
         adapter = new MatrixAdapter(myList);
         recyclerView.setAdapter(adapter);
 

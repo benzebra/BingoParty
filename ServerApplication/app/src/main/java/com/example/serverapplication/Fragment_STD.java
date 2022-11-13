@@ -15,8 +15,7 @@ public class Fragment_STD extends Fragment {
     }
 
     public static Fragment_STD newInstance() {
-        Fragment_STD fragment = new Fragment_STD();
-        return fragment;
+        return new Fragment_STD();
     }
 
     @Override
@@ -27,8 +26,8 @@ public class Fragment_STD extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment__s_t_d, container, false);
+
         // Inflate the layout for this fragment
-        return rootView;
+        return inflater.inflate(R.layout.fragment__s_t_d, container, false);
     }
 }

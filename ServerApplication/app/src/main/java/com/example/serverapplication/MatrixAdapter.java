@@ -1,6 +1,5 @@
 package com.example.serverapplication;
 
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +11,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
+/**
+ * MatrixAdapater
+ *
+ * Utilizzato per visualizzare le matrici dei giocatori a schermo nella RecyclerView presente
+ * all'interno del PlayerFragment (GameLoopActivity)
+ */
 public class MatrixAdapter extends RecyclerView.Adapter<MatrixAdapter.MatrixViewHolder> {
 
     //ViewHolder class
@@ -59,7 +64,6 @@ public class MatrixAdapter extends RecyclerView.Adapter<MatrixAdapter.MatrixView
         String toPut;
 
         int[] myMatrix = dataset.get(position);
-        //System.out.println("DEBUG ADAPTER:65, matrix: " + dataset.get(position));
 
         for(int i=0; i<myMatrix.length; i++){
             toModify = holder.TVList[i];
@@ -76,7 +80,6 @@ public class MatrixAdapter extends RecyclerView.Adapter<MatrixAdapter.MatrixView
 
     @Override
     public int getItemCount() {
-        // 9
         return dataset.size();
     }
 }

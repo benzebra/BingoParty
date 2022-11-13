@@ -16,4 +16,8 @@
     <color name="grey">#B3B3B3</color>
     <color name="yellow">#FFCC00</color>
     <color name="lighter_grey">#A6A6A6</color>
+
+    <color name="btn_bkg">#0d0d0d</color>
+    <color name="secondary_black">#262626</color>
+    <color name="main_bkg">#e6e6e6</color>
 </resources>

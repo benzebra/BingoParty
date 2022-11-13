@@ -16,6 +16,7 @@ public class WinnerActivity extends AppCompatActivity {
 
     private TextView winnerName;
     private Button restart_btn;
+    private TextView winnerIs;
     private static ArrayList<Player> players;
 
     private static Context ctx;
@@ -25,9 +26,12 @@ public class WinnerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_winner);
 
+        getSupportActionBar().hide();
+
         ctx = this;
 
         winnerName = findViewById(R.id.winnerName);
+        winnerIs = findViewById(R.id.textView_winneris);
 
         Intent intent = getIntent();
         String NAME = intent.getStringExtra(GameLoopActivity.WINNER);
@@ -47,7 +51,13 @@ public class WinnerActivity extends AppCompatActivity {
         sendWinner.start();
         resetGame();
 
-        winnerName.setText(NAME);
+        //caso di timeout
+        if(NAME.equals("timeout")){
+            winnerIs.setText(" ");
+            winnerName.setText("!!! TIMEOUT !!!");
+        }else{
+            winnerName.setText(NAME);
+        }
 
         restart_btn = findViewById(R.id.restart_btn);
         restart_btn.setOnClickListener(new View.OnClickListener() {
@@ -76,6 +86,4 @@ public class WinnerActivity extends AppCompatActivity {
         });
         stopReceiversAndConnection.start();
     }
-
-
 }

@@ -11,7 +11,9 @@ public class Server {
     private BufferedReader fromServer;
     private PrintWriter toServer;
 
-    public Server() { }
+    public Server() {
+
+    }
 
     //GETTER
     public InetAddress getInetAddress() { return inetAddress; }
